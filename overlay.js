@@ -17,14 +17,14 @@ async function getTable(id) {
   }
 }
 
-function updateHTML(elements, settings) {
+function updateHTML(elements) {
   Object.entries(elements).forEach(([id, val]) => {
     document.getElementById(id).textContent = val;
   });
 }
 
-export async function updateOverlay(settings) {
-  getTable(settings.tableID).then((table) => {
+export async function updateOverlay(fc, tableID) {
+  getTable(tableID).then((table) => {
     const ffa = table.format === "FFA";
     let teams;
     if (ffa) {
@@ -42,11 +42,11 @@ export async function updateOverlay(settings) {
     }
 
     const teamIdx = teams.findIndex((team) =>
-      Object.keys(team.players).includes(settings.fc)
+      Object.keys(team.players).includes(fc)
     );
 
     if (teamIdx == -1) {
-      console.error(`FC not found on table with id: ${settings.tableID}`);
+      console.error(`FC not found on table with id: ${tableID}`);
       return;
     }
 
@@ -108,7 +108,7 @@ export async function updateOverlay(settings) {
       tag: !ffa ? Object.keys(table.teams)[teamIdx].tag : null,
       format: table.format,
       races: table.races_played,
-      score: teams[teamIdx].players[settings.fc].total_score,
+      score: teams[teamIdx].players[fc].total_score,
       teamScore: !ffa ? teamScore : null,
       position: `${tied ? "Tied " : ""}${positions[posIdx]}`,
       ptsAhead: ptsAhead,
