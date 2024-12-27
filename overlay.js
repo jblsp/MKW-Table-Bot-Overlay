@@ -105,7 +105,7 @@ export async function updateOverlay(fc, tableID) {
     }
 
     const elements = {
-      tag: !ffa ? Object.keys(table.teams)[teamIdx].tag : null,
+      tag: !ffa ? Object.keys(table.teams)[teamIdx] : null,
       format: table.format,
       races: table.races_played,
       score: teams[teamIdx].players[fc].total_score,

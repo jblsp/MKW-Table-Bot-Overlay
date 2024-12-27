@@ -11,6 +11,10 @@
     display: None
 }
 
+#tag:before {
+    content:"Tag "
+}
+
 #races:before {
     content: "Races: ";
 }
@@ -27,7 +31,7 @@
     content: ")";
 }
 
-#races, #score {
+#tag, #races, #score {
     display: block;
 }
 
