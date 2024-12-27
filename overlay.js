@@ -71,11 +71,11 @@ export async function updateOverlay(fc, tableID) {
       teams?.[teamIdx + 1]?.total_score === teamScore ||
       teams?.[teamIdx - 1]?.total_score === teamScore;
 
-    let i = teamIdx;
+    let i = teamIdx + 1;
     let ptsAhead = "";
     while (true) {
-      let nextTeam = teams?.[teamIdx + 1];
-      if (!nextTeam) {
+      let nextTeam = teams?.[i];
+      if (nextTeam === undefined) {
         break;
       } else if (nextTeam.total_score === teamScore) {
         i++;
@@ -88,11 +88,11 @@ export async function updateOverlay(fc, tableID) {
       }
     }
 
-    i = teamIdx;
+    i = teamIdx - 1;
     let ptsBehind = "";
     while (true) {
-      let nextTeam = teams?.[teamIdx - 1];
-      if (!nextTeam) {
+      let nextTeam = teams?.[i];
+      if (nextTeam === undefined) {
         break;
       } else if (nextTeam.total_score === teamScore) {
         i--;
