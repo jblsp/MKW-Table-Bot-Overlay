@@ -79,7 +79,6 @@ async function updateOverlay(fc, tableID) {
         break;
       } else if (nextTeam.total_score === teamScore) {
         i++;
-        posIdx++;
       } else {
         ptsAhead = `+${
           parseInt(teams[teamIdx].total_score) - parseInt(nextTeam.total_score)
@@ -96,6 +95,7 @@ async function updateOverlay(fc, tableID) {
         break;
       } else if (nextTeam.total_score === teamScore) {
         i--;
+        posIdx--;
       } else {
         ptsBehind = ` -${
           parseInt(nextTeam.total_score) - parseInt(teams[teamIdx].total_score)
