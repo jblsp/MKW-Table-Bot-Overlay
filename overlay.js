@@ -23,7 +23,7 @@ function updateHTML(elements) {
   });
 }
 
-export async function updateOverlay(fc, tableID) {
+async function updateOverlay(fc, tableID) {
   getTable(tableID).then((table) => {
     const ffa = table.format === "FFA";
     let teams;
@@ -117,4 +117,15 @@ export async function updateOverlay(fc, tableID) {
 
     updateHTML(elements);
   });
+}
+
+export async function startOverlay(fc, tableID, refreshInterval) {
+  function startAutoRefresh(refreshInterval) {
+    setTimeout(function () {
+      updateOverlay(fc, tableID);
+      startAutoRefresh(refreshInterval);
+    }, refreshInterval);
+  }
+  updateOverlay(fc, tableID);
+  startAutoRefresh(refreshInterval);
 }

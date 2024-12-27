@@ -1,4 +1,4 @@
-import { updateOverlay } from "./overlay.js";
+import { startOverlay } from "./overlay.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 
@@ -25,8 +25,5 @@ if (!fc || !tableID) {
     document.head.appendChild(link);
   }
   document.getElementById("setupHelper").remove();
-  updateOverlay(fc, tableID);
-  setTimeout(function () {
-    updateOverlay(fc, tableID);
-  }, 7500);
+  startOverlay(fc, tableID, 7500);
 }
