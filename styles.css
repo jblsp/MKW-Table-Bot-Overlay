@@ -1,17 +1,14 @@
-* {
+#overlay {
     font-family: 'Trebuchet MS', sans-serif;
     font-size: 70px;
     color: #ffffff;
     text-shadow: 3px 3px #000000;
-}
-
-*:empty {
-    display: none !important;
-}
-
-html {
     position: absolute;
     bottom: 0;
+}
+
+.overlayItem:empty:before, .overlayItem:empty:after {
+    display: None
 }
 
 #races:before {

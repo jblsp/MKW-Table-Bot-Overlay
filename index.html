@@ -7,13 +7,20 @@
     <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>
   <body>
-    <span id="format"></span>
-    <span id="tag"></span>
-    <span id="races"></span>
-    <span id="score"></span>
-    <span id="ptsAhead"></span>
-    <span id="position"></span>
-    <span id="teamScore"></span>
-    <span id="ptsBehind"></span>
+    <div id="setupHelper">
+      <input type="text" id="fc" name="fc" placeholder="Friend Code">
+      <input type="text" id="tableID" name="tableID" placeholder="Table ID">
+      <button type="button" id="setupButton">Open Overlay</button>
+    </div>
+    <div id="overlay">
+      <span id="format" class="overlayItem"></span>
+      <span id="tag" class="overlayItem"></span>
+      <span id="races" class="overlayItem"></span>
+      <span id="score" class="overlayItem"></span>
+      <span id="ptsAhead" class="overlayItem"></span>
+      <span id="position" class="overlayItem"></span>
+      <span id="teamScore" class="overlayItem"></span>
+      <span id="ptsBehind" class="overlayItem"></span>
+    </div>
   </body>
 </html>

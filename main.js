@@ -6,10 +6,16 @@ const fc = urlParams.get("fc");
 const tableID = urlParams.get("tableID");
 
 if (!fc || !tableID) {
-  console.error(
-    "Missing paramater(s). URL must include ?fc=xxxx-xxxx-xxxx&tableID=xxx"
-  );
+  document.getElementById("setupButton").onclick = () => {
+    const fc = document.getElementById("fc").value;
+    const tableID = document.getElementById("tableID").value;
+    let url = new URL(window.location);
+    url.searchParams.set("fc", fc);
+    url.searchParams.set("tableID", tableID);
+    window.location.href = url.toString();
+  };
 } else {
+  document.getElementById("setupHelper").remove();
   updateOverlay(fc, tableID);
   setTimeout(function () {
     updateOverlay(fc, tableID);
