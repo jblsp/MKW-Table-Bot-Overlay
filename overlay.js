@@ -1,0 +1,120 @@
+const tablebotAPI = "https://mkw-table-bot-api.jprq.site";
+
+async function getTable(id) {
+  try {
+    const response = await fetch(
+      tablebotAPI + "/api/json/team_scores/" + id + "?style=none"
+    );
+    if (!response.ok) {
+      const error = await response.json();
+      console.error(error.detail);
+    } else {
+      const data = await response.json();
+      return data;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function updateHTML(elements, settings) {
+  Object.entries(elements).forEach(([id, val]) => {
+    document.getElementById(id).textContent = val;
+  });
+}
+
+export async function updateOverlay(settings) {
+  getTable(settings.tableID).then((table) => {
+    const ffa = table.format === "FFA";
+    let teams;
+    if (ffa) {
+      // The table bot API stores all players on one team in FFA, so this code
+      // changes that so each player in the ffa is on their own team
+      teams = [];
+      for (let [fc, player] of Object.entries(table.teams["No Tag"].players)) {
+        teams.push({
+          total_score: player.total_score,
+          players: { [fc]: player },
+        });
+      }
+    } else {
+      teams = Object.values(table.teams);
+    }
+
+    const teamIdx = teams.findIndex((team) =>
+      Object.keys(team.players).includes(settings.fc)
+    );
+
+    if (teamIdx == -1) {
+      console.error(`FC not found on table with id: ${settings.tableID}`);
+      return;
+    }
+
+    const positions = [
+      "1st",
+      "2nd",
+      "3rd",
+      "4th",
+      "5th",
+      "6th",
+      "7th",
+      "8th",
+      "9th",
+      "10th",
+      "11th",
+      "12th",
+    ];
+    let posIdx = teamIdx;
+    const teamScore = teams[teamIdx].total_score;
+
+    const tied =
+      teams?.[teamIdx + 1]?.total_score === teamScore ||
+      teams?.[teamIdx - 1]?.total_score === teamScore;
+
+    let i = teamIdx;
+    let ptsAhead = "";
+    while (true) {
+      let nextTeam = teams?.[teamIdx + 1];
+      if (!nextTeam) {
+        break;
+      } else if (nextTeam.total_score === teamScore) {
+        i++;
+        posIdx++;
+      } else {
+        ptsAhead = `+${
+          parseInt(teams[teamIdx].total_score) - parseInt(nextTeam.total_score)
+        } `;
+        break;
+      }
+    }
+
+    i = teamIdx;
+    let ptsBehind = "";
+    while (true) {
+      let nextTeam = teams?.[teamIdx - 1];
+      if (!nextTeam) {
+        break;
+      } else if (nextTeam.total_score === teamScore) {
+        i--;
+      } else {
+        ptsBehind = ` -${
+          parseInt(nextTeam.total_score) - parseInt(teams[teamIdx].total_score)
+        }`;
+        break;
+      }
+    }
+
+    const elements = {
+      tag: !ffa ? Object.keys(table.teams)[teamIdx].tag : null,
+      format: table.format,
+      races: table.races_played,
+      score: teams[teamIdx].players[settings.fc].total_score,
+      teamScore: !ffa ? teamScore : null,
+      position: `${tied ? "Tied " : ""}${positions[posIdx]}`,
+      ptsAhead: ptsAhead,
+      ptsBehind: ptsBehind,
+    };
+
+    updateHTML(elements);
+  });
+}
