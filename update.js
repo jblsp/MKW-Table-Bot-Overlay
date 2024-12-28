@@ -17,12 +17,6 @@ async function getTable(id) {
   }
 }
 
-function updateHTML(elements) {
-  Object.entries(elements).forEach(([id, val]) => {
-    document.getElementById(id).textContent = val;
-  });
-}
-
 async function updateOverlay(fc, tableID) {
   getTable(tableID).then((table) => {
     const ffa = table.format === "FFA";
@@ -80,7 +74,7 @@ async function updateOverlay(fc, tableID) {
       } else if (nextTeam.total_score === teamScore) {
         i++;
       } else {
-        ptsAhead = `+${
+        ptsAhead = `${
           parseInt(teams[teamIdx].total_score) - parseInt(nextTeam.total_score)
         } `;
         break;
@@ -95,9 +89,9 @@ async function updateOverlay(fc, tableID) {
         break;
       } else if (nextTeam.total_score === teamScore) {
         i--;
-        posIdx--;
+        posIdx--; // move the position index to the highest tied pos
       } else {
-        ptsBehind = ` -${
+        ptsBehind = `${
           parseInt(nextTeam.total_score) - parseInt(teams[teamIdx].total_score)
         }`;
         break;
@@ -115,7 +109,7 @@ async function updateOverlay(fc, tableID) {
       ptsBehind: ptsBehind,
     };
 
-    updateHTML(elements);
+    update(elements);
   });
 }
 
